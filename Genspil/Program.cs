@@ -57,7 +57,7 @@ namespace Genspil
 
         public GameInventory() // Constructor
         {
-            // Indlæs spil fra JSON-filen så den kan læses
+            // Indlæs spil fra JSON-filen 
             games = LoadGamesFromJson();
         }
 
