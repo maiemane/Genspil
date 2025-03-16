@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "Sequence",
+    "GameCondition": 0,
+    "Price": 150.0,
+    "Stock": 7
+  },
+  {
+    "Name": "7 Wonders",
+    "GameCondition": 1,
+    "Price": 100.0,
+    "Stock": 14
+  },
+  {
+    "Name": "Ticket to ride",
+    "GameCondition": 1,
+    "Price": 90.0,
+    "Stock": 2
+  },
+  {
+    "Name": "Ticket to ride",
+    "GameCondition": 0,
+    "Price": 150.0,
+    "Stock": 3
+  }
+]
