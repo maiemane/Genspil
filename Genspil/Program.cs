@@ -27,36 +27,49 @@ namespace Genspil
         {
             bool exit = false;
 
-            /*
-             
-            Lagerliste
-                Tilføj 
-                Fjern
-                Rediger
-                Vis lagerliste 
-                    Efter navn
-                    Efter stand
-                Søg i lagerliste
-                Tilbage
-            Forespørgsler
-                Opret forespørgsel
-                Fjern forespørgsel
-                Vis forespørgsler
-                Tilbage
-            Afslut
-              
-             */
-
-
             while (!exit)
             {
                 Console.Clear();
                 Console.WriteLine("#####Spil Inventory Menu######");
-                Console.WriteLine("1. Tilføj et nyt spil");
-                Console.WriteLine("2. Se spil i hukommelsen");
-                Console.WriteLine("3. Se spil fra JSON fil");
-                Console.WriteLine("4. Fjern et spil");
-                Console.WriteLine("5. Afslut");
+                Console.WriteLine("1. Lagerliste");
+                Console.WriteLine("2. Forespørgsler");
+                Console.WriteLine("3. Afslut");
+                Console.Write("Vælg en mulighed: ");
+
+                string input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        ShowInventoryMenu();
+                        break;
+                    case "2":
+                        ShowRequestMenu();
+                        break;
+                    case "3":
+                        exit = true;
+                        break;
+                    default:
+                        Console.WriteLine("fix");
+                        break;
+                }
+            }
+        }
+
+        public static void ShowInventoryMenu()
+        {
+            bool slut = false;
+
+            while (!slut)
+            {
+                Console.Clear();
+                Console.WriteLine("#####Lagerliste Menu######");
+                Console.WriteLine("1. Tilføj");
+                Console.WriteLine("2. Fjern");
+                Console.WriteLine("3. Rediger");
+                Console.WriteLine("4. Vis lagerliste");
+                Console.WriteLine("5. Søg i lagerliste");
+                Console.WriteLine("6. Tilbage");
                 Console.Write("Vælg en mulighed: ");
 
                 string input = Console.ReadLine();
@@ -67,26 +80,72 @@ namespace Genspil
                         inventory.AddGameFromUserInput();
                         break;
                     case "2":
+                        Console.Write("Indtast navnet på spillet, der skal fjernes: ");
+                        string nameToRemove = Console.ReadLine();
+                        inventory.RemoveGame(nameToRemove);
+                        break;
+                    case "3":
+                        // redgier lager
+                        // inventory.EditGame(); ??
+                        break;
+                    case "4":
                         inventory.ListGames();
                         Console.WriteLine("Tryk på en tast for at gå tilbage...");
                         Console.ReadKey();
                         break;
-                    case "4":
-                        Console.Write("Indtast navnet på spillet, der skal fjernes: ");
-                        string nameToRemove = Console.ReadLine();
-                        // funktionen skal videre udvikles, så man kan vælge et spil samt vælge stand + antal der skal fjernes
-                        // lige nu fjerner den alle den første entry den finder med det navn du har indtastet.
-                            inventory.RemoveGame(nameToRemove);
-                        break;
                     case "5":
-                        exit = true;
+                        // søgefunktion
+                        // inventory.SearchGame(); ??
+                        // tænker menuen går gennem de forskellige søgekriterier, og hvis man ikke taster noget så er det ikke relevant til søgningen. Nem måde at kombinere søgninger på
+                        break;
+                    case "6":
+                        slut = true;
                         break;
                     default:
-                        Console.WriteLine("KIG DOG PÅ MENUEN.");
+                        Console.WriteLine("fix");
                         break;
                 }
             }
+        }
 
+        public static void ShowRequestMenu()
+        {
+            bool slut = false;
+
+            while (!slut)
+            {
+                Console.Clear();
+                Console.WriteLine("#####Forespørgsler Menu######");
+                Console.WriteLine("1. Opret forespørgsel");
+                Console.WriteLine("2. Fjern forespørgsel");
+                Console.WriteLine("3. Vis forespørgsler");
+                Console.WriteLine("4. Tilbage");
+                Console.Write("Vælg en mulighed: ");
+
+                string input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        // opret forespørgsel
+                        // request.CreateRequest(); ??
+                        break;
+                    case "2":
+                        // fjern forespørgsel
+                        // request.RemoveRequest(); ??
+                        break;
+                    case "3":
+                        // vis forespørgseler
+                        // request.RemoveRequest(); ??
+                        break;
+                    case "4":
+                        slut = true;
+                        break;
+                    default:
+                        Console.WriteLine("fix");
+                        break;
+                }
+            }
         }
 
 
