@@ -19,7 +19,7 @@
     {
         "Name": "Sequence",
         "Genre": "Horror",
-        "GroupSize" "2"
+        "GroupSize": "2",
         "Price": 150.0,
         "Version": "Original",
         "Condition": "0",
@@ -28,7 +28,7 @@
     {
         "Name": "Sequence",
         "Genre": "Horror",
-        "GroupSize" "2",
+        "GroupSize": "2",
         "Price": 150.0,
         "Version": "Original",
         "Condition": "3",
@@ -37,7 +37,7 @@
     {
         "Name": "Sequence",
         "Genre": "Horror",
-        "GroupSize" "2",
+        "GroupSize": "2",
         "Price": 150.0,
         "Version": "Junior",
         "Condition": "1",
@@ -46,7 +46,7 @@
     {
         "Name": "Sequence",
         "Genre": "Horror",
-        "GroupSize" "2",
+        "GroupSize": "2",
         "Price": 150.0,
         "Version": "Giant Rejsespil",
         "Condition": "0",
@@ -56,7 +56,7 @@
     {
         "Name": "Ticket to Ride",
         "Genre": "Strategy",
-        "GroupSize" "6",
+        "GroupSize": "6",
         "Price": 150.0,
         "Version": "Berlin",
         "Condition": "0",
@@ -65,7 +65,7 @@
     {
         "Name": "Ticket to Ride",
         "Genre": "Strategy",
-        "GroupSize" "6",
+        "GroupSize": "6",
         "Price": 150.0,
         "Version": "Berlin",
         "Condition": "1",
@@ -74,7 +74,7 @@
     {
         "Name": "Ticket to Ride",
         "Genre": "Strategy",
-        "GroupSize" "6",
+        "GroupSize": "6",
         "Price": 150.0,
         "Version": "Berlin",
         "Condition": "3",
@@ -83,7 +83,7 @@
     {
         "Name": "Ticket to Ride",
         "Genre": "Strategy",
-        "GroupSize" "6",
+        "GroupSize": "6",
         "Price": 150.0,
         "Version": "Europe - Dansk",
         "Condition": "0",
@@ -92,7 +92,7 @@
     {
         "Name": "Ticket to Ride",
         "Genre": "Strategy",
-        "GroupSize" "6",
+        "GroupSize": "6",
         "Price": 150.0,
         "Version": "Japan & Italy",
         "Condition": "0",
@@ -102,7 +102,7 @@
     {
         "Name": "7 Wonders",
         "Genre": "Puzzle",
-        "GroupSize" "4",
+        "GroupSize": "4",
         "Price": 150.0,
         "Version": "Architects - Dansk",
         "Condition": "1",
@@ -111,7 +111,7 @@
     {
         "Name": "7 Wonders",
         "Genre": "Puzzle",
-        "GroupSize" "4",
+        "GroupSize": "4",
         "Price": 150.0,
         "Version": "Architects - Dansk",
         "Condition": "0",
@@ -120,7 +120,7 @@
     {
         "Name": "7 Wonders",
         "Genre": "Puzzle",
-        "GroupSize" "4",
+        "GroupSize": "4",
         "Price": 150.0,
         "Version": "Architects - Medals",
         "Condition": "1",
@@ -129,7 +129,7 @@
     {
         "Name": "7 Wonders",
         "Genre": "Puzzle",
-        "GroupSize" "4",
+        "GroupSize": "4",
         "Price": 150.0,
         "Version": "2nd Edition Cities - Engelsk",
         "Condition": "3",
@@ -138,7 +138,7 @@
     {
         "Name": "7 Wonders",
         "Genre": "Puzzle",
-        "GroupSize" "4",
+        "GroupSize": "4",
         "Price": 150.0,
         "Version": "Dansk Duel - Agora",
         "Condition": "1",
@@ -147,7 +147,7 @@
     {
         "Name": "7 Wonders",
         "Genre": "Puzzle",
-        "GroupSize" "4",
+        "GroupSize": "4",
         "Price": 150.0,
         "Version": "Dansk Duel - Agora",
         "Condition": "0",
@@ -156,7 +156,7 @@
     {
         "Name": "7 Wonders",
         "Genre": "Puzzle",
-        "GroupSize" "4",
+        "GroupSize": "4",
         "Price": 150.0,
         "Version": "Engels Duel - Agora",
         "Condition": "3",
@@ -166,7 +166,7 @@
     {
         "Name": "Alverdens",
         "Genre": "Party",
-        "GroupSize" "6",
+        "GroupSize": "6",
         "Price": 150.0,
         "Version": "Helte",
         "Condition": "3",
@@ -175,7 +175,7 @@
     {
         "Name": "Alverdens",
         "Genre": "Party",
-        "GroupSize" "6",
+        "GroupSize": "6",
         "Price": 150.0,
         "Version": "Helte",
         "Condition": "0",
@@ -184,7 +184,7 @@
     {
         "Name": "Alverdens",
         "Genre": "Party",
-        "GroupSize" "6",
+        "GroupSize": "6",
         "Price": 150.0,
         "Version": "OMG",
         "Condition": "0",
@@ -193,7 +193,7 @@
     {
         "Name": "Alverdens",
         "Genre": "Party",
-        "GroupSize" "6",
+        "GroupSize": "6",
         "Price": 150.0,
         "Version": "Popkultur",
         "Condition": "0",
@@ -202,7 +202,7 @@
     {
         "Name": "Alverdens",
         "Genre": "Party",
-        "GroupSize" "6",
+        "GroupSize": "6",
         "Price": 150.0,
         "Version": "Popkultur",
         "Condition": "1",
@@ -211,7 +211,7 @@
     {
         "Name": "Alverdens",
         "Genre": "Party",
-        "GroupSize" "6",
+        "GroupSize": "6",
         "Price": 150.0,
         "Version": "Arkitektur",
         "Condition": "0",
@@ -221,7 +221,7 @@
     {
         "Name": "A la Carte",
         "Genre": "War",
-        "GroupSize" "4",
+        "GroupSize": "4",
         "Price": 150.0,
         "Version": "Dessert",
         "Condition": "0",
