@@ -6,22 +6,108 @@ namespace Genspil
 {
     internal class Program
     {
+        // Inventory liste
+        static GameInventory inventory = new GameInventory();
 
         static void Main(string[] args)
         {
-            // Inventory liste
-            GameInventory inventory = new GameInventory();
-
+ 
             // Tilføjelse af spil til listen
             //inventory.AddGame(new Game("Sequence", Game.Condition.God, 150, 1));
             //inventory.AddGame(new Game("Ticket to ride", Game.Condition.God, 150, 3));
             //inventory.AddGame(new Game("7 Wonders", Game.Condition.OK, 100, 2));
 
             // Tilføj nyt spil fra brugerinput (valgte lige en menu, ellers så kan man kun tilføje et spil også stopper programmet)
-            inventory.ShowMenu();
+            ShowMenu();
 
 
         }
+
+        public static void ShowMenu()
+        {
+            bool exit = false;
+
+            /*
+             
+            Lagerliste
+                Tilføj 
+                Fjern
+                Rediger
+                Vis lagerliste 
+                    Efter navn
+                    Efter stand
+                Søg i lagerliste
+                Tilbage
+            Forespørgsler
+                Opret forespørgsel
+                Fjern forespørgsel
+                Vis forespørgsler
+                Tilbage
+            Afslut
+              
+             */
+
+
+            while (!exit)
+            {
+                Console.Clear();
+                Console.WriteLine("#####Spil Inventory Menu######");
+                Console.WriteLine("1. Tilføj et nyt spil");
+                Console.WriteLine("2. Se spil i hukommelsen");
+                Console.WriteLine("3. Se spil fra JSON fil");
+                Console.WriteLine("4. Fjern et spil");
+                Console.WriteLine("5. Afslut");
+                Console.Write("Vælg en mulighed: ");
+
+                string input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        inventory.AddGameFromUserInput();
+                        break;
+                    case "2":
+                        inventory.ListGames();
+                        Console.WriteLine("Tryk på en tast for at gå tilbage...");
+                        Console.ReadKey();
+                        break;
+                    case "4":
+                        Console.Write("Indtast navnet på spillet, der skal fjernes: ");
+                        string nameToRemove = Console.ReadLine();
+                        // funktionen skal videre udvikles, så man kan vælge et spil samt vælge stand + antal der skal fjernes
+                        // lige nu fjerner den alle den første entry den finder med det navn du har indtastet.
+                            inventory.RemoveGame(nameToRemove);
+                        break;
+                    case "5":
+                        exit = true;
+                        break;
+                    default:
+                        Console.WriteLine("KIG DOG PÅ MENUEN.");
+                        break;
+                }
+            }
+
+        }
+
+
+    }
+
+    public class Request
+    {
+        // Properties
+        public string Name { get; set; }
+        public double MaxPrice { get; set; }
+
+        // Constructor
+        public Request(string name, double maxprice)
+        {
+            Name = name;
+            MaxPrice = maxprice;
+        }
+
+    }
+
+    public class RequestList { 
     }
 
     public class Game
@@ -86,17 +172,28 @@ namespace Genspil
 
         // Fjern et spil fra listen
         // skal laves lidt om, så man kan fjerne 1 stk med en stand fx istedet for at fjerne alle med samme navn
-        public void RemoveGame(Game game)
+        public void RemoveGame(String nameToRemove)
         {
-            if (games.Remove(game))
+            Game gameToRemove = games.FirstOrDefault(g => g.Name == nameToRemove);
+
+            if (gameToRemove != null)
             {
-                Console.WriteLine($"Spillet {game.Name} er fjernet fra listen.");
-                SaveGamesToJson(); // Gem ændringerne
+                if (games.Remove(gameToRemove))
+                {
+                    Console.WriteLine($"Spillet {gameToRemove.Name} er fjernet fra listen.");
+                    SaveGamesToJson(); // Gem ændringerne
+                }
+                else
+                {
+                    Console.WriteLine($"Spillet {gameToRemove.Name} blev ikke fundet.");
+                }
             }
             else
             {
-                Console.WriteLine($"Spillet {game.Name} blev ikke fundet.");
+                Console.WriteLine("Spillet blev ikke fundet.");
             }
+
+
         }
 
         // Vis alle spil i listen
@@ -177,62 +274,12 @@ namespace Genspil
         }
 
         // Eriks arbejde
-        public void ShowMenu()
-        {
-            bool exit = false;
 
-            while (!exit)
-            {
-                Console.Clear();
-                Console.WriteLine("#####Spil Inventory Menu######");
-                Console.WriteLine("1. Tilføj et nyt spil");
-                Console.WriteLine("2. Se spil i hukommelsen");
-                Console.WriteLine("3. Se spil fra JSON fil");
-                Console.WriteLine("4. Fjern et spil");
-                Console.WriteLine("5. Afslut");
-                Console.Write("Vælg en mulighed: ");
 
-                string input = Console.ReadLine();
 
-                switch (input)
-                {
-                    case "1":
-                        AddGameFromUserInput();
-                        break;
-                    case "2":
-                        ListGames();
-                        Console.WriteLine("Tryk på en tast for at gå tilbage...");
-                        Console.ReadKey();
-                        break;
-                    case "3":
-                        ShowGamesFromJson();
-                        Console.WriteLine("Tryk på en tast for at gå tilbage...");
-                        Console.ReadKey();
-                        break;
-                    case "4":
-                        Console.Write("Indtast navnet på spillet, der skal fjernes: ");
-                        string nameToRemove = Console.ReadLine();
-                        Game gameToRemove = games.FirstOrDefault(g => g.Name == nameToRemove);
-                        // funktionen skal videre udvikles, så man kan vælge et spil samt vælge stand + antal der skal fjernes
-                        // lige nu fjerner den alle den første entry den finder med det navn du har indtastet.
-                        if (gameToRemove != null)
-                        {
-                            RemoveGame(gameToRemove);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Spillet blev ikke fundet.");
-                        }
-                        break;
-                    case "5":
-                        exit = true;
-                        break;
-                    default:
-                        Console.WriteLine("KIG DOG PÅ MENUEN.");
-                        break;
-                }
-            }
-        }
+
+
+
 
         // Vis spil fra JSON fil
         private void ShowGamesFromJson()
