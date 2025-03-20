@@ -97,6 +97,8 @@ namespace Genspil
                         // søgefunktion
                         // inventory.SearchGame(); ??
                         // tænker menuen går gennem de forskellige søgekriterier, og hvis man ikke taster noget så er det ikke relevant til søgningen. Nem måde at kombinere søgninger på
+                        GameSearch search = new GameSearch(inventory);
+                        search.SearchAndDisplay();
                         break;
                     case "6":
                         slut = true;
@@ -176,14 +178,20 @@ namespace Genspil
         public Condition GameCondition { get; set; }
         public double Price { get; set; }
         public int Stock { get; set; }
+        public string Genre { get; set; }
+        public int GroupSize { get; set; }
+        public string Version { get; set; }
 
         // Constructor
-        public Game(string name, Condition condition, double price, int stock)
+        public Game(string name, Condition condition, double price, int stock, string genre, int groupSize, string version)
         {
             Name = name;
             GameCondition = condition;
             Price = price;
             Stock = stock;
+            Genre = genre;
+            GroupSize = groupSize;
+            Version = version;
         }
 
         // Enum for stand
@@ -191,7 +199,8 @@ namespace Genspil
         {
             God,
             OK,
-            Slidt
+            Slidt,
+            TilReperation,
         }
     }
 
@@ -205,6 +214,11 @@ namespace Genspil
             // Indlæs spil fra JSON-filen 
             games = LoadGamesFromJson();
         }
+        public List<Game> GetGames() 
+        {
+            return LoadGamesFromJson();
+        }
+
 
         // Tilføj spil til listen (opdaterer lager, hvis spillet findes)
         public void AddGame(Game game)
@@ -310,8 +324,8 @@ namespace Genspil
             }
 
             // Opret spillet og tilføj det til listen (spillet bliver tilføjet til vores liste i AddGame metoden)
-            Game newGame = new Game(name, condition, price, stock);
-            AddGame(newGame);
+            //Game newGame = new Game(name, condition, price, stock);
+            //AddGame(newGame);
         }
 
         // Gem listen til JSON-filen
@@ -326,8 +340,11 @@ namespace Genspil
         {
             if (File.Exists(FilePath))
             {
+                
                 string json = File.ReadAllText(FilePath);
+                Console.WriteLine("Debug" + json);
                 return JsonConvert.DeserializeObject<List<Game>>(json) ?? new List<Game>();
+
             }
             return new List<Game>();
         }
