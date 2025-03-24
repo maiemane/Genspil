@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json; //tilføj json.net via NuGet
 
 namespace Genspil

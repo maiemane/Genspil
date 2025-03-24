@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Newtonsoft.Json; //tilføj json.net via NuGet
 
 namespace Genspil
@@ -336,15 +338,23 @@ namespace Genspil
         }
 
         // Indlæs spil fra JSON-filen
-        private List<Game> LoadGamesFromJson()
+        public List<Game> LoadGamesFromJson()
         {
             if (File.Exists(FilePath))
             {
-                
-                string json = File.ReadAllText(FilePath);
-                Console.WriteLine("Debug" + json);
-                return JsonConvert.DeserializeObject<List<Game>>(json) ?? new List<Game>();
-
+                try
+                {
+                    string json = File.ReadAllText(FilePath);
+                    return JsonConvert.DeserializeObject<List<Game>>(json) ?? new List<Game>();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Fejl ved indlæsning af JSON-fil: " + ex.Message);
+                }
+            }
+            else
+            {
+                Console.WriteLine("JSON-filen blev ikke fundet: " + Path.GetFullPath(FilePath));
             }
             return new List<Game>();
         }
