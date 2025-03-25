@@ -288,47 +288,61 @@ namespace Genspil
             }
         }
 
-        // Tilføj et spil via brugerinput
-        public void AddGameFromUserInput()
+        public void AddGameFromUserInput(){
+        Console.WriteLine("Tilføj et nyt spil:");
+        // Navn
+        Console.Write("Navn på spil: ");
+        string name = Console.ReadLine();
+    
+        // Stand
+        Console.Write("Stand (God, OK, Slidt): ");
+        string conditionInput = Console.ReadLine();
+        Game.Condition condition;
+        while (!Enum.TryParse(conditionInput, true, out condition))
         {
-            Console.WriteLine("Tilføj et nyt spil:");
-
-            // Navn
-            Console.Write("Navn på spil: ");
-            string name = Console.ReadLine();
-
-            // Stand
-            Console.Write("Stand (God, OK, Slidt): ");
-            string conditionInput = Console.ReadLine();
-            Game.Condition condition;
-            while (!Enum.TryParse(conditionInput, true, out condition))
-            {
-                //Du er en klovn hvis du har skrevet forkert, prøv igen
-                Console.Write("Skriv dog det rigtige ind!. Vælg mellem: " + string.Join(", ", Enum.GetNames(typeof(Game.Condition))) + ". Prøv igen: ");
-                conditionInput = Console.ReadLine();
-            }
-
-            // Pris
-            Console.Write("Pris: ");
-            double price;
-            //loop rundt, så vi kan blive ved med at tage imod input indtil vi får en double værdi der er større end 0
-            while (!double.TryParse(Console.ReadLine(), out price) || price < 0)
-            {
-                Console.Write("Ugyldig pris. Indtast en positiv værdi: ");
-            }
-
-            // Antal der skal tilføjes til lageret samme koncept som above
-            Console.Write("Antal: ");
-            int stock;
-            while (!int.TryParse(Console.ReadLine(), out stock) || stock < 0)
-            {
-                Console.Write("Ugyldigt antal. Indtast et positivt tal: ");
-            }
-
-            // Opret spillet og tilføj det til listen (spillet bliver tilføjet til vores liste i AddGame metoden)
-            //Game newGame = new Game(name, condition, price, stock);
-            //AddGame(newGame);
+            Console.Write("Skriv dog det rigtige ind! Vælg mellem: " + string.Join(", ", Enum.GetNames(typeof(Game.Condition))) + ". Prøv igen: ");
+            conditionInput = Console.ReadLine();
         }
+    
+        // GroupSize
+        Console.Write("Antal spillere (GroupSize): ");
+        int groupSize;
+        while (!int.TryParse(Console.ReadLine(), out groupSize) || groupSize < 1)
+        {
+            Console.Write("Ugyldigt antal spillere. Indtast et positivt tal: ");
+        }
+    
+        // Genre
+        Console.Write("Genre: ");
+        string genre = Console.ReadLine();
+    
+        // Pris
+        Console.Write("Pris: ");
+        double price;
+        while (!double.TryParse(Console.ReadLine(), out price) || price < 0)
+        {
+            Console.Write("Ugyldig pris. Indtast en positiv værdi: ");
+        }
+    
+        // Antal der skal tilføjes til lageret
+        Console.Write("Antal på lager: ");
+        int stock;
+        while (!int.TryParse(Console.ReadLine(), out stock) || stock < 0)
+        {
+            Console.Write("Ugyldigt antal. Indtast et positivt tal: ");
+        }
+    
+        // Version 
+        Console.Write("Version fx Original, Hyggespil: ");
+        string version = Console.ReadLine();
+    
+        // Opret nyt spil og tilføj det til lageret
+        //Game newGame = new Game(name, condition, price, stock, genre, groupSize, version);
+        //AddGame(newGame);
+    
+        Console.WriteLine("Spillet er blevet tilføjet!");
+        }
+
 
         // Gem listen til JSON-filen
         private void SaveGamesToJson()
