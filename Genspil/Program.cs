@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Xml.Schema;
 using Newtonsoft.Json; //tilføj json.net via NuGet
 
@@ -92,9 +93,8 @@ namespace Genspil
                         // inventory.EditGame(); ??
                         break;
                     case "4":
-                        inventory.ListGames();
-                        Console.WriteLine("Tryk på en tast for at gå tilbage...");
-                        Console.ReadKey();
+                        GameSort sort = new GameSort(inventory.GetGames());
+                        sort.ListGames();
                         break;
                     case "5":
                         // søgefunktion
@@ -270,88 +270,6 @@ namespace Genspil
             }
 
 
-        }
-
-        // Vis alle spil i listen
-        public void ListGames()
-        {
-            if (games.Count == 0)
-            {
-                Console.WriteLine("Der er ingen spil i listen.");
-            }
-            else
-            {
-                Console.WriteLine("######hvad vil du sortere efter#######");
-                Console.WriteLine("Vælg en mulighed: ");
-                Console.WriteLine("1. Navn");
-                Console.WriteLine("2. Pris");
-                Console.WriteLine("3. Tilstand");
-                Console.WriteLine("4. Antal spillere");
-                Console.WriteLine("5. Genre");
-                Console.Write("vælg en mulighed: ");
-                string valg = Console.ReadLine();
-
-                switch (valg) {
-                    case "1":
-                        games.Sort(
-                            (game1, game2) =>
-                                {
-                                    int sort1 = game1.Name.CompareTo(game2.Name);
-                                    if (sort1 != 0) return sort1;
-                                    return game1.Stock.CompareTo(game2.Stock);
-                                }
-                            );
-                        break;
-                    case "2":
-                        games.Sort(
-                            (game1, game2) =>
-                                {
-                                    int sort1 = game1.Price.CompareTo(game2.Price);
-                                    if (sort1 != 0) return sort1;
-                                    return game1.Stock.CompareTo(game2.Stock);
-                                }
-                            );
-                        break;
-                    case "3":
-                        games.Sort(
-                            (game1, game2) =>
-                                {
-                                    int sort1 = game1.GameCondition.CompareTo(game2.GameCondition);
-                                    if (sort1 != 0) return sort1;
-                                    return game1.Stock.CompareTo(game2.Stock);
-                                }
-                            );
-                        break;
-                    case "4":
-                        games.Sort(
-                            (game1, game2) =>
-                                {
-                                    int sort1 = game1.GroupSize.CompareTo(game2.GroupSize);
-                                    if (sort1 != 0) return sort1;
-                                    return game1.Stock.CompareTo(game2.Stock);
-                                }
-                            );
-                        break;
-                     case "5":
-                        games.Sort(
-                        (game1, game2) =>
-                            {
-                                int sort1 = game1.Genre.CompareTo(game2.Genre);
-                                if (sort1 != 0) return sort1;
-                                return game1.Stock.CompareTo(game2.Stock);
-                            }
-                        );
-                        break;
-                    default:
-                        Console.WriteLine("fix");
-                        break;
-                }
-                   
-                foreach (Game game in games)
-                {
-                    Console.WriteLine($"Spil: {game.Name}, Stand: {game.GameCondition}, Pris: {game.Price} kr, Antal Spillere: {game.GroupSize} Genre: {game.Genre} Antal: {game.Stock} stk.");
-                }
-            }
         }
         
 
