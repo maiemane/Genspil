@@ -15,7 +15,7 @@ namespace Genspil
 
         static void Main(string[] args)
         {
- 
+
             // Tilføjelse af spil til listen
             //inventory.AddGame(new Game("Sequence", Game.Condition.God, 150, 1));
             //inventory.AddGame(new Game("Ticket to ride", Game.Condition.God, 150, 3));
@@ -93,15 +93,13 @@ namespace Genspil
                         // inventory.EditGame(); ??
                         break;
                     case "4":
-                        GameSort sort = new GameSort(inventory.GetGames());
-                        sort.ListGames();
+                        inventory.ListGames();
                         break;
                     case "5":
                         // søgefunktion
                         // inventory.SearchGame(); ??
                         // tænker menuen går gennem de forskellige søgekriterier, og hvis man ikke taster noget så er det ikke relevant til søgningen. Nem måde at kombinere søgninger på
-                        GameSearch search = new GameSearch(inventory);
-                        search.SearchAndDisplay();
+                        inventory.SearchAndDisplay();
                         break;
                     case "6":
                         slut = true;
@@ -171,7 +169,7 @@ namespace Genspil
 
     }
 
-    public class RequestList { 
+    public class RequestList {
     }
 
     public class Game
@@ -206,185 +204,4 @@ namespace Genspil
             TilReperation,
         }
     }
-
-    public class GameInventory
-    {
-        private List<Game> games = new List<Game>(); // Liste over spil i hukommelsen (Maise og Anders)
-        private static string FilePath = "games.json"; // Placering af vores JSON-fil
-
-        public GameInventory() // Constructor
-        {
-            // Indlæs spil fra JSON-filen 
-            games = LoadGamesFromJson();
-        }
-        public List<Game> GetGames() 
-        {
-            return LoadGamesFromJson();
-        }
-
-
-        // Tilføj spil til listen (opdaterer lager, hvis spillet findes)
-        public void AddGame(Game game)
-        {
-            // Tjek om spillet allerede findes med samme navn og stand man kunne vælge pris også, men går ud fra samme spil samme stand = samme pris
-            Game existingGame = games.FirstOrDefault(g => g.Name == game.Name && g.GameCondition == game.GameCondition);
-
-            if (existingGame != null)
-            {
-                // Hvis spillet findes, opdater lageret istedet for at tilføje en ny entry, siden vi ikke har et id er det dog case sensitive
-                existingGame.Stock += game.Stock;
-                Console.WriteLine($"Lager opdateret! {game.Name} ({game.GameCondition}) har nu {existingGame.Stock} stk.");
-            }
-            else
-            {
-                // Hvis spillet ikke findes, tilføj det til listen
-                games.Add(game);
-                Console.WriteLine($"Nyt spil tilføjet: {game.Name} ({game.GameCondition}) med {game.Stock} stk.");
-            }
-
-            // Gem den opdaterede liste til JSON-filen
-            SaveGamesToJson();
-        }
-
-        // Fjern et spil fra listen
-        // skal laves lidt om, så man kan fjerne 1 stk med en stand fx istedet for at fjerne alle med samme navn
-        public void RemoveGame(String nameToRemove)
-        {
-            Game gameToRemove = games.FirstOrDefault(g => g.Name == nameToRemove);
-
-            if (gameToRemove != null)
-            {
-                if (games.Remove(gameToRemove))
-                {
-                    Console.WriteLine($"Spillet {gameToRemove.Name} er fjernet fra listen.");
-                    SaveGamesToJson(); // Gem ændringerne
-                }
-                else
-                {
-                    Console.WriteLine($"Spillet {gameToRemove.Name} blev ikke fundet.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Spillet blev ikke fundet.");
-            }
-
-
-        }
-        
-
-        public void AddGameFromUserInput(){
-        Console.WriteLine("Tilføj et nyt spil:");
-        // Navn
-        Console.Write("Navn på spil: ");
-        string name = Console.ReadLine();
-    
-        // Stand
-        Console.Write("Stand (God, OK, Slidt): ");
-        string conditionInput = Console.ReadLine();
-        Game.Condition condition;
-        while (!Enum.TryParse(conditionInput, true, out condition))
-        {
-            Console.Write("Skriv dog det rigtige ind! Vælg mellem: " + string.Join(", ", Enum.GetNames(typeof(Game.Condition))) + ". Prøv igen: ");
-            conditionInput = Console.ReadLine();
-        }
-    
-        // GroupSize
-        Console.Write("Antal spillere (GroupSize): ");
-        int groupSize;
-        while (!int.TryParse(Console.ReadLine(), out groupSize) || groupSize < 1)
-        {
-            Console.Write("Ugyldigt antal spillere. Indtast et positivt tal: ");
-        }
-    
-        // Genre
-        Console.Write("Genre: ");
-        string genre = Console.ReadLine();
-    
-        // Pris
-        Console.Write("Pris: ");
-        double price;
-        while (!double.TryParse(Console.ReadLine(), out price) || price < 0)
-        {
-            Console.Write("Ugyldig pris. Indtast en positiv værdi: ");
-        }
-    
-        // Antal der skal tilføjes til lageret
-        Console.Write("Antal på lager: ");
-        int stock;
-        while (!int.TryParse(Console.ReadLine(), out stock) || stock < 0)
-        {
-            Console.Write("Ugyldigt antal. Indtast et positivt tal: ");
-        }
-    
-        // Version 
-        Console.Write("Version fx Original, Hyggespil: ");
-        string version = Console.ReadLine();
-    
-        // Opret nyt spil og tilføj det til lageret
-        //Game newGame = new Game(name, condition, price, stock, genre, groupSize, version);
-        //AddGame(newGame);
-    
-        Console.WriteLine("Spillet er blevet tilføjet!");
-        }
-
-
-        // Gem listen til JSON-filen
-        private void SaveGamesToJson()
-        {
-            string json = JsonConvert.SerializeObject(games, Formatting.Indented);
-            File.WriteAllText(FilePath, json);
-        }
-
-        // Indlæs spil fra JSON-filen
-        public List<Game> LoadGamesFromJson()
-        {
-            if (File.Exists(FilePath))
-            {
-                try
-                {
-                    string json = File.ReadAllText(FilePath);
-                    return JsonConvert.DeserializeObject<List<Game>>(json) ?? new List<Game>();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Fejl ved indlæsning af JSON-fil: " + ex.Message);
-                }
-            }
-            else
-            {
-                Console.WriteLine("JSON-filen blev ikke fundet: " + Path.GetFullPath(FilePath));
-            }
-            return new List<Game>();
-        }
-
-        // Eriks arbejde
-
-
-
-
-
-
-
-        // Vis spil fra JSON fil
-        private void ShowGamesFromJson()
-        {
-            var loadedGames = LoadGamesFromJson();
-            if (loadedGames.Count == 0)
-            {
-                Console.WriteLine("Der er ingen spil i JSON filen.");
-            }
-            else
-            {
-                Console.WriteLine("#####SPIL FRA JSON FIL#####");
-                foreach (var game in loadedGames)
-                {
-                    Console.WriteLine($"Spil: {game.Name}, Stand: {game.GameCondition}, Pris: {game.Price} kr, Antal: {game.Stock} stk.");
-                }
-            }
-        }
-    }
-
-
-
 }
