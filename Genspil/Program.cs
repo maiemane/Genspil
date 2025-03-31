@@ -111,6 +111,159 @@ namespace Genspil
             }
         }
 
+        //eksempel på ny menu hvor EditGame kan bruges
+         public static void ShowInventoryMenuWithEditGame()
+        {
+            bool slut = false;
+
+            while (!slut)
+            {
+                Console.Clear();
+                Console.WriteLine("#####Lagerliste Menu######");
+                Console.WriteLine("1. Tilføj");
+                Console.WriteLine("3. Rediger");
+                Console.WriteLine("4. Vis lagerliste");
+                Console.WriteLine("5. Søg i lagerliste");
+                Console.WriteLine("6. Tilbage");
+                Console.Write("Vælg en mulighed: ");
+
+                string input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        inventory.AddGameFromUserInput();
+                        break;
+                    case "2":
+                        //Console.Write("Indtast navnet på spillet, der skal fjernes: ");
+                        //string nameToRemove = Console.ReadLine();
+                        //inventory.RemoveGame(nameToRemove);
+                        break;
+                    case "3":
+                        Console.WriteLine("Rediger spil");
+                        Console.Write("Indtast navnet på spillet du vil redigere: ");
+                        string gameName = Console.ReadLine();
+
+                        // Hent listen over spil fra inventory
+                        var games = inventory.LoadGamesFromJson();
+
+                        // Find alle spil med det samme navn
+                        var matchingGames = games.Where(g => g.Name.Equals(gameName, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                        if (matchingGames.Count() == 0)  // Brug Count() som metode
+                        {
+                            Console.WriteLine("Ingen spil fundet med det navn.");
+                            break;
+                        }
+
+                        string gameVersion = "";
+
+                        if (matchingGames.Count() == 1)
+                        {
+                            gameVersion = matchingGames[0].Version;
+                            Console.WriteLine($"Spillet {gameName} ({gameVersion}) er fundet.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Flere spil fundet. Vælg en version:");
+                            for (int i = 0; i < matchingGames.Count(); i++)
+                            {
+                                Console.WriteLine($"{i + 1}. {matchingGames[i].Name} ({matchingGames[i].Version}) - Lager: {matchingGames[i].Stock}");
+                            }
+
+                            int selectedIndex;
+                            while (true)
+                            {
+                                Console.Write("Indtast nummeret på den version, du vil redigere: ");
+                                if (int.TryParse(Console.ReadLine(), out selectedIndex) && selectedIndex > 0 && selectedIndex <= matchingGames.Count())
+                                {
+                                    gameVersion = matchingGames[selectedIndex - 1].Version;
+                                    break;
+                                }
+                                Console.WriteLine("Ugyldigt valg, prøv igen.");
+                            }
+                        }
+
+                        Console.WriteLine("Vælg hvad du vil ændre:");
+                        Console.WriteLine("1. Fjern 1 fra lager");
+                        Console.WriteLine("2. Fjern spillet helt");
+                        Console.WriteLine("3. Rediger navn");
+                        Console.WriteLine("4. Rediger version");
+                        Console.WriteLine("5. Rediger lagerbeholdning");
+                        Console.WriteLine("6. Rediger genre");
+                        Console.WriteLine("7. Rediger pris");
+                        Console.Write("Indtast dit valg: ");
+                        string editChoice = Console.ReadLine();
+
+                        string newValue = "";
+                        string action = "";
+
+                        switch (editChoice)
+                        {
+                            case "1":
+                                action = "remove_one";
+                                break;
+                            case "2":
+                                action = "remove_all";
+                                break;
+                            case "3":
+                                Console.Write("Indtast det nye navn: ");
+                                newValue = Console.ReadLine();
+                                action = "edit_name";
+                                break;
+                            case "4":
+                                Console.Write("Indtast den nye version: ");
+                                newValue = Console.ReadLine();
+                                action = "edit_version";
+                                break;
+                            case "5":
+                                Console.Write("Indtast den nye lagerbeholdning: ");
+                                newValue = Console.ReadLine();
+                                action = "edit_stock";
+                                break;
+                            case "6":
+                                Console.Write("Indtast den nye genre: ");
+                                newValue = Console.ReadLine();
+                                action = "edit_genre";
+                                break;
+                            case "7":
+                                Console.Write("Indtast den nye pris: ");
+                                newValue = Console.ReadLine();
+                                action = "edit_price";
+                                break;
+                            default:
+                                Console.WriteLine("Ugyldigt valg.");
+                                break;
+                        }
+
+                        if (!string.IsNullOrEmpty(action))
+                        {
+                            inventory.EditGame(gameName, gameVersion, action, newValue);
+                        }
+                        break;
+
+                    case "4":
+                        inventory.ListGames();
+                        Console.WriteLine("Tryk på en tast for at gå tilbage...");
+                        Console.ReadKey();
+                        break;
+                    case "5":
+                        // søgefunktion
+                        // inventory.SearchGame(); ??
+                        // tænker menuen går gennem de forskellige søgekriterier, og hvis man ikke taster noget så er det ikke relevant til søgningen. Nem måde at kombinere søgninger på
+                        GameSearch search = new GameSearch(inventory);
+                        search.SearchAndDisplay();
+                        break;
+                    case "6":
+                        slut = true;
+                        break;
+                    default:
+                        Console.WriteLine("fix");
+                        break;
+                }
+            }
+        }
+
         public static void ShowRequestMenu()
         {
             bool slut = false;
