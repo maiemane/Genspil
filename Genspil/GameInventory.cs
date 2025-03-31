@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json; //tilføj json.net via NuGet
+using Newtonsoft.Json; //tilfÃ¸j json.net via NuGet
 
 namespace Genspil
 {
@@ -12,7 +12,7 @@ namespace Genspil
 
         public GameInventory() // Constructor
         {
-            // Indlæs spil fra JSON-filen 
+            // IndlÃ¦s spil fra JSON-filen 
             games = LoadGamesFromJson();
         }
         public List<Game> GetGames()
@@ -21,23 +21,23 @@ namespace Genspil
         }
 
 
-        // Tilføj spil til listen (opdaterer lager, hvis spillet findes)
+        // TilfÃ¸j spil til listen (opdaterer lager, hvis spillet findes)
         public void AddGame(Game game)
         {
-            // Tjek om spillet allerede findes med samme navn og stand man kunne vælge pris også, men går ud fra samme spil samme stand = samme pris
+            // Tjek om spillet allerede findes med samme navn og stand man kunne vÃ¦lge pris ogsÃ¥, men gÃ¥r ud fra samme spil samme stand = samme pris
             Game existingGame = games.FirstOrDefault(g => g.Name == game.Name && g.GameCondition == game.GameCondition);
 
             if (existingGame != null)
             {
-                // Hvis spillet findes, opdater lageret istedet for at tilføje en ny entry, siden vi ikke har et id er det dog case sensitive
+                // Hvis spillet findes, opdater lageret istedet for at tilfÃ¸je en ny entry, siden vi ikke har et id er det dog case sensitive
                 existingGame.Stock += game.Stock;
                 Console.WriteLine($"Lager opdateret! {game.Name} ({game.GameCondition}) har nu {existingGame.Stock} stk.");
             }
             else
             {
-                // Hvis spillet ikke findes, tilføj det til listen
+                // Hvis spillet ikke findes, tilfÃ¸j det til listen
                 games.Add(game);
-                Console.WriteLine($"Nyt spil tilføjet: {game.Name} ({game.GameCondition}) med {game.Stock} stk.");
+                Console.WriteLine($"Nyt spil tilfÃ¸jet: {game.Name} ({game.GameCondition}) med {game.Stock} stk.");
             }
 
             // Gem den opdaterede liste til JSON-filen
@@ -45,7 +45,7 @@ namespace Genspil
         }
 
         // Fjern et spil fra listen
-        // skal laves lidt om, så man kan fjerne 1 stk med en stand fx istedet for at fjerne alle med samme navn
+        // skal laves lidt om, sÃ¥ man kan fjerne 1 stk med en stand fx istedet for at fjerne alle med samme navn
         public void RemoveGame(String nameToRemove)
         {
             Game gameToRemove = games.FirstOrDefault(g => g.Name == nameToRemove);
@@ -55,7 +55,7 @@ namespace Genspil
                 if (games.Remove(gameToRemove))
                 {
                     Console.WriteLine($"Spillet {gameToRemove.Name} er fjernet fra listen.");
-                    SaveGamesToJson(); // Gem ændringerne
+                    SaveGamesToJson(); // Gem Ã¦ndringerne
                 }
                 else
                 {
@@ -73,9 +73,9 @@ namespace Genspil
 
         public void AddGameFromUserInput()
         {
-            Console.WriteLine("Tilføj et nyt spil:");
+            Console.WriteLine("TilfÃ¸j et nyt spil:");
             // Navn
-            Console.Write("Navn på spil: ");
+            Console.Write("Navn pÃ¥ spil: ");
             string name = Console.ReadLine();
 
             // Stand
@@ -84,7 +84,7 @@ namespace Genspil
             Game.Condition condition;
             while (!Enum.TryParse(conditionInput, true, out condition))
             {
-                Console.Write("Skriv dog det rigtige ind! Vælg mellem: " + string.Join(", ", Enum.GetNames(typeof(Game.Condition))) + ". Prøv igen: ");
+                Console.Write("Skriv dog det rigtige ind! VÃ¦lg mellem: " + string.Join(", ", Enum.GetNames(typeof(Game.Condition))) + ". PrÃ¸v igen: ");
                 conditionInput = Console.ReadLine();
             }
 
@@ -105,12 +105,13 @@ namespace Genspil
             double price;
             while (!double.TryParse(Console.ReadLine(), out price) || price < 0)
             {
-                Console.Write("Ugyldig pris. Indtast en positiv værdi: ");
+                Console.Write("Ugyldig pris. Indtast en positiv vÃ¦rdi: ");
             }
 
-            // Antal der skal tilføjes til lageret
-            Console.Write("Antal på lager: ");
+            // Antal der skal tilfÃ¸jes til lageret
+            Console.Write("Antal pÃ¥ lager: ");
             int stock;
+            // skal nok Ã¦ndres til at mÃ¥ inkludere 0, da vi godt kan have spil som er pÃ¥ "efterspÃ¸rgsel"
             while (!int.TryParse(Console.ReadLine(), out stock) || stock < 0)
             {
                 Console.Write("Ugyldigt antal. Indtast et positivt tal: ");
@@ -120,14 +121,91 @@ namespace Genspil
             Console.Write("Version fx Original, Hyggespil: ");
             string version = Console.ReadLine();
 
-            // Opret nyt spil og tilføj det til lageret
+            // Opret nyt spil og tilfÃ¸j det til lageret
             //Game newGame = new Game(name, condition, price, stock, genre, groupSize, version);
             //AddGame(newGame);
 
-            Console.WriteLine("Spillet er blevet tilføjet!");
+            Console.WriteLine("Spillet er blevet tilfÃ¸jet!");
         }
 
 
+        public void EditGame(string name, string version, string action, string newValue = "", int amount = 1)
+        {
+            Game gameToEdit = games.FirstOrDefault(g => g.Name == name && g.Version == version);
+
+            if (gameToEdit == null)
+            {
+                Console.WriteLine("Spillet blev ikke fundet.");
+                return;
+            }
+
+            switch (action.ToLower())
+            {
+                case "remove_one":
+                    if (gameToEdit.Stock > 0)
+                    {
+                        gameToEdit.Stock--;
+                        Console.WriteLine($"Der blev fjernet 1 fra lageret af {gameToEdit.Name} ({gameToEdit.Version}). Ny lagerstatus: {gameToEdit.Stock}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Lageret er allerede tomt.");
+                    }
+                    break;
+
+                case "remove_all":
+                    games.Remove(gameToEdit);
+                    Console.WriteLine($"Spillet {gameToEdit.Name} ({gameToEdit.Version}) er fjernet helt fra listen.");
+                    break;
+
+                case "edit_name":
+                    gameToEdit.Name = newValue;
+                    Console.WriteLine($"Spillets navn er Ã¦ndret til {newValue}.");
+                    break;
+
+                case "edit_version":
+                    gameToEdit.Version = newValue;
+                    Console.WriteLine($"Spillets version er Ã¦ndret til {newValue}.");
+                    break;
+
+                case "edit_stock":
+                    if (int.TryParse(newValue, out int newStock) && newStock >= 0)
+                    {
+                        gameToEdit.Stock = newStock;
+                        Console.WriteLine($"Lageret er opdateret til {newStock}.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ugyldig vÃ¦rdi for lager.");
+                    }
+                    break;
+
+                case "edit_genre":
+                    gameToEdit.Genre = newValue;
+                    Console.WriteLine($"Genren er Ã¦ndret til {newValue}.");
+                    break;
+
+                case "edit_price":
+                    if (double.TryParse(newValue, out double newPrice) && newPrice >= 0)
+                    {
+                        gameToEdit.Price = newPrice;
+                        Console.WriteLine($"Prisen er opdateret til {newPrice} kr.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ugyldig pris.");
+                    }
+                    break;
+
+                default:
+                    Console.WriteLine("Ugyldig handling.");
+                    return;
+            }
+
+            SaveGamesToJson(); // Gem Ã¦ndringerne
+        }
+
+        
         // Gem listen til JSON-filen
         private void SaveGamesToJson()
         {
@@ -135,7 +213,7 @@ namespace Genspil
             File.WriteAllText(FilePath, json);
         }
 
-        // Indlæs spil fra JSON-filen
+        // IndlÃ¦s spil fra JSON-filen
         public List<Game> LoadGamesFromJson()
         {
             if (File.Exists(FilePath))
@@ -147,7 +225,7 @@ namespace Genspil
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Fejl ved indlæsning af JSON-fil: " + ex.Message);
+                    Console.WriteLine("Fejl ved indlÃ¦sning af JSON-fil: " + ex.Message);
                 }
             }
             else
@@ -173,7 +251,7 @@ namespace Genspil
 
         public void SearchAndDisplay()
         {
-            Console.WriteLine("Søg i liste: ");
+            Console.WriteLine("SÃ¸g i liste: ");
             Console.Write("Navn (valgfrit): ");
             string name = Console.ReadLine();
 
@@ -197,7 +275,7 @@ namespace Genspil
             Game.Condition? condition = Enum.TryParse(conditionInput, out Game.Condition ParsedCondition) ? ParsedCondition : (Game.Condition?)null;
 
             var results = SearchGame(name, genre, MinPlayers, MaxPlayers, MinPrice, MaxPrice, condition);
-            Console.WriteLine("Søgeresultat: ");
+            Console.WriteLine("SÃ¸geresultat: ");
             if (results.Count == 0)
             {
                 Console.WriteLine("Ingen resultater fundet.");
@@ -210,7 +288,7 @@ namespace Genspil
                 }
             }
 
-            Console.WriteLine("Tryk for at gå tilbage. ");
+            Console.WriteLine("Tryk for at gÃ¥ tilbage. ");
             Console.ReadKey();
         }
 
@@ -231,14 +309,14 @@ namespace Genspil
             else
             {
                 Console.WriteLine("######hvad vil du sortere efter#######");
-                Console.WriteLine("Vælg en mulighed: ");
+                Console.WriteLine("VÃ¦lg en mulighed: ");
                 Console.WriteLine("1. Navn");
                 Console.WriteLine("2. Pris");
                 Console.WriteLine("3. Tilstand");
                 Console.WriteLine("4. Antal spillere");
                 Console.WriteLine("5. Genre");
-                Console.WriteLine("6. Antal på lager");
-                Console.Write("vælg en mulighed: ");
+                Console.WriteLine("6. Antal pÃ¥ lager");
+                Console.Write("vÃ¦lg en mulighed: ");
                 string valg = Console.ReadLine();
 
                 switch (valg)
@@ -308,7 +386,7 @@ namespace Genspil
                         break;
                 }
 
-                // find maksimmal længde på kolonner
+                // find maksimmal lÃ¦ngde pÃ¥ kolonner
                 int nameWidth = Math.Min(Math.Max("Navn".Length, games.Max(g => g.Name.Length)), 40);
                 int conditionWidth = Math.Max("Stand".Length, games.Max(g => g.GameCondition.ToString().Length));
                 int priceWidth = Math.Max("Pris".Length, games.Max(g => g.Price.ToString("0.00" + " kr").Length));
@@ -334,9 +412,9 @@ namespace Genspil
                 double TotalValue = games.Sum(g => g.Price * g.Stock);
 
                 Console.WriteLine($"Total antal unikke spil: {TotalUnikkeSpil}");
-                Console.WriteLine($"Total antal spil på lager: {TotalStock}");
-                Console.WriteLine($"Total værdi af lager: {TotalValue:0.00} kr");
-                Console.WriteLine("\n Tryk på en tast for at gå tilbage...");
+                Console.WriteLine($"Total antal spil pÃ¥ lager: {TotalStock}");
+                Console.WriteLine($"Total vÃ¦rdi af lager: {TotalValue:0.00} kr");
+                Console.WriteLine("\n Tryk pÃ¥ en tast for at gÃ¥ tilbage...");
                 Console.ReadKey();
             }
         }
