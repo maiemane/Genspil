@@ -129,7 +129,7 @@ namespace Genspil
         }
 
 
-        public void EditGame(string name, string version, string action, string newValue = "", int amount = 1)
+        public void EditGame(string name, string version, string action, string newValue = "")
         {
             Game gameToEdit = games.FirstOrDefault(g => g.Name == name && g.Version == version);
 
@@ -138,7 +138,7 @@ namespace Genspil
                 Console.WriteLine("Spillet blev ikke fundet.");
                 return;
             }
-
+            //switch case skal kaldes med en string fra menuen fx "remove_one" som action EditGame(name, string version, action) 
             switch (action.ToLower())
             {
                 case "remove_one":
