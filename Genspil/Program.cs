@@ -12,6 +12,7 @@ namespace Genspil
     {
         // Inventory liste
         static GameInventory inventory = new GameInventory();
+        static RequestInventory requests = new RequestInventory();
 
         static void Main(string[] args)
         {
@@ -87,57 +88,6 @@ namespace Genspil
                         Console.Write("Indtast navnet på spillet, der skal fjernes: ");
                         string nameToRemove = Console.ReadLine();
                         inventory.RemoveGame(nameToRemove);
-                        break;
-                    case "3":
-                        // redgier lager
-                        // inventory.EditGame(); ??
-                        break;
-                    case "4":
-                        inventory.ListGames();
-                        break;
-                    case "5":
-                        // søgefunktion
-                        // inventory.SearchGame(); ??
-                        // tænker menuen går gennem de forskellige søgekriterier, og hvis man ikke taster noget så er det ikke relevant til søgningen. Nem måde at kombinere søgninger på
-                        inventory.SearchAndDisplay();
-                        break;
-                    case "6":
-                        slut = true;
-                        break;
-                    default:
-                        Console.WriteLine("fix");
-                        break;
-                }
-            }
-        }
-
-        //eksempel på ny menu hvor EditGame kan bruges
-         public static void ShowInventoryMenuWithEditGame()
-        {
-            bool slut = false;
-
-            while (!slut)
-            {
-                Console.Clear();
-                Console.WriteLine("#####Lagerliste Menu######");
-                Console.WriteLine("1. Tilføj");
-                Console.WriteLine("3. Rediger");
-                Console.WriteLine("4. Vis lagerliste");
-                Console.WriteLine("5. Søg i lagerliste");
-                Console.WriteLine("6. Tilbage");
-                Console.Write("Vælg en mulighed: ");
-
-                string input = Console.ReadLine();
-
-                switch (input)
-                {
-                    case "1":
-                        inventory.AddGameFromUserInput();
-                        break;
-                    case "2":
-                        //Console.Write("Indtast navnet på spillet, der skal fjernes: ");
-                        //string nameToRemove = Console.ReadLine();
-                        //inventory.RemoveGame(nameToRemove);
                         break;
                     case "3":
                         Console.WriteLine("Rediger spil");
@@ -244,15 +194,12 @@ namespace Genspil
 
                     case "4":
                         inventory.ListGames();
-                        Console.WriteLine("Tryk på en tast for at gå tilbage...");
-                        Console.ReadKey();
                         break;
                     case "5":
                         // søgefunktion
                         // inventory.SearchGame(); ??
                         // tænker menuen går gennem de forskellige søgekriterier, og hvis man ikke taster noget så er det ikke relevant til søgningen. Nem måde at kombinere søgninger på
-                        GameSearch search = new GameSearch(inventory);
-                        search.SearchAndDisplay();
+                        inventory.SearchAndDisplay();
                         break;
                     case "6":
                         slut = true;
@@ -263,6 +210,8 @@ namespace Genspil
                 }
             }
         }
+
+
 
         public static void ShowRequestMenu()
         {
@@ -283,16 +232,15 @@ namespace Genspil
                 switch (input)
                 {
                     case "1":
-                        // opret forespørgsel
-                        // request.CreateRequest(); ??
+                        requests.AddRequest(inventory);  
                         break;
                     case "2":
                         // fjern forespørgsel
-                        // request.RemoveRequest(); ??
+                        requests.RemoveRequest();
                         break;
                     case "3":
                         // vis forespørgseler
-                        // request.RemoveRequest(); ??
+                        requests.ListRequests();
                         break;
                     case "4":
                         slut = true;
@@ -312,17 +260,16 @@ namespace Genspil
         // Properties
         public string Name { get; set; }
         public double MaxPrice { get; set; }
+        public string Username { get; set; }
 
         // Constructor
-        public Request(string name, double maxprice)
+        public Request(string name, double maxprice, string username)
         {
             Name = name;
             MaxPrice = maxprice;
+            Username = username;
         }
 
-    }
-
-    public class RequestList {
     }
 
     public class Game
