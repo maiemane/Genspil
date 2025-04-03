@@ -14,6 +14,7 @@ namespace Genspil
         {
             // Indlæs spil fra JSON-filen 
             games = LoadGamesFromJson();
+            requestedGames LoadGamesFromJson();
         }
         public List<Game> GetGames()
         {
@@ -40,6 +41,10 @@ namespace Genspil
                 Console.WriteLine($"Nyt spil tilføjet: {game.Name} ({game.GameCondition}) med {game.Stock} stk.");
             }
 
+            bool isRequestedGameRemoved = games.FirstOrDefault(g => g.Name);
+            if(isRequestedGameRemoved){
+                Console.WriteLine($"Dette spil fandtes i requested games, og vil derfor blive fjernet derfra da det nu er kommet på lager");   
+            }
             // Gem den opdaterede liste til JSON-filen
             SaveGamesToJson();
         }
