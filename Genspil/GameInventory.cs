@@ -143,10 +143,12 @@ namespace Genspil
                 Console.WriteLine("Spillet blev ikke fundet.");
                 return;
             }
-            //switch case skal kaldes med en string fra menuen fx "remove_one" som action EditGame(name, string version, action) 
+            //switch case skal kaldes med en string fra menuen fx "remove_one" som action EditGame(name,version, action, newValue) 
             switch (action.ToLower())
             {
+                    // fjern en fra lager beholdningen
                 case "remove_one":
+                    // stock skal selvfølgelig være > 0 for at kunne fjerne 1
                     if (gameToEdit.Stock > 0)
                     {
                         gameToEdit.Stock--;
@@ -157,12 +159,12 @@ namespace Genspil
                         Console.WriteLine("Lageret er allerede tomt.");
                     }
                     break;
-
+                // fjern alle med navn & version
                 case "remove_all":
                     games.Remove(gameToEdit);
                     Console.WriteLine($"Spillet {gameToEdit.Name} ({gameToEdit.Version}) er fjernet helt fra listen.");
                     break;
-
+                // rediger navn, til "newValue" som sendes fra 
                 case "edit_name":
                     gameToEdit.Name = newValue;
                     Console.WriteLine($"Spillets navn er ændret til {newValue}.");
@@ -172,7 +174,7 @@ namespace Genspil
                     gameToEdit.Version = newValue;
                     Console.WriteLine($"Spillets version er ændret til {newValue}.");
                     break;
-
+                // rediger "stock" eller lager beholdning
                 case "edit_stock":
                     if (int.TryParse(newValue, out int newStock) && newStock >= 0)
                     {
@@ -184,12 +186,12 @@ namespace Genspil
                         Console.WriteLine("Ugyldig værdi for lager.");
                     }
                     break;
-
+                // rediger genre
                 case "edit_genre":
                     gameToEdit.Genre = newValue;
                     Console.WriteLine($"Genren er ændret til {newValue}.");
                     break;
-
+                // rediger prisen på "stocken" eller lager beholdningen.
                 case "edit_price":
                     if (double.TryParse(newValue, out double newPrice) && newPrice >= 0)
                     {
