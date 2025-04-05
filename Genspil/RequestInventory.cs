@@ -9,14 +9,16 @@ namespace Genspil
 {
     class RequestInventory
     {
-        private List<Request> requests = new List<Request>();
-        private static string FilePath = "requests.json"; 
+        private List<Request> requests = new List<Request>(); // Liste over spil i hukommelsen
+        private static string FilePath = "requests.json"; // Placering af vores JSON-fil
 
-        public RequestInventory()
+        // Indlæs requests fra JSON-fil
+        public RequestInventory() // Constructor
         {
             requests = LoadRequestsFromJson();
         }
 
+        // Tilføj request til listen
         public void AddRequest(GameInventory inventory)
         {
             Console.WriteLine("Tilføj et nyt spil:");
@@ -27,6 +29,7 @@ namespace Genspil
             Console.Write("Dit navn: ");
             string username = Console.ReadLine();
 
+            // tjek om requesten er en positiv integer
             Console.Write("Pris: ");
             double maxPris;
             while (!double.TryParse(Console.ReadLine(), out maxPris) || maxPris < 0)
@@ -34,14 +37,16 @@ namespace Genspil
                 Console.Write("Ugyldig pris. Indtast en positiv værdi: ");
             }
 
+            // tjekker om det requestede spil allerede er i lageret
             List<Game> goodGames = inventory.SearchGame(name, "", null, null, null, maxPris);
 
             if (goodGames.Count == 0)
             {
-                // Opret nyt spil og tilføj det til lageret
+                // Opret ny request i request listen
                 Request newRequest = new Request(name, maxPris, username);
                 requests.Add(newRequest);
 
+                // Gemmer spillet til JSON filen
                 SaveRequestsToJson();
 
             }
@@ -55,16 +60,20 @@ namespace Genspil
 
         }
 
+        // fjerner request fra listen
         public void RemoveRequest()
         {
             Console.WriteLine("Tilføj et nyt spil:");
 
+            // spilnavn
             Console.Write("Navn på spil: ");
             string name = Console.ReadLine();
 
+            // brugernavn
             Console.Write("Dit navn: ");
             string username = Console.ReadLine();
             
+            // spørger efter navn og brugernavn af request der skal fjernes
             Request requestToRemove = requests.FirstOrDefault(r => r.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && r.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
             if (requestToRemove != null)
             {
@@ -79,6 +88,7 @@ namespace Genspil
             Console.ReadLine();
         }
 
+        // viser alle requests
         public void ListRequests()
         {
             if (requests.Count == 0)
@@ -95,12 +105,14 @@ namespace Genspil
             } Console.ReadLine();
         }
 
+        // metode til at gemme requests til JSON fil
         private void SaveRequestsToJson()
         {
             string json = JsonConvert.SerializeObject(requests, Formatting.Indented);
             File.WriteAllText(FilePath, json);
         }
 
+        // metode til at indlæse requests fra JSON fil
         public List<Request> LoadRequestsFromJson()
         {
             if (File.Exists(FilePath))

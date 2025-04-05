@@ -242,7 +242,7 @@ namespace Genspil
             return new List<Game>();
         }
 
-        public List<Game> SearchGame(string name = "", string genre = "", int? MinPlayers = null, int? MaxPlayers = null, double? MinPrice = null, double? MaxPrice = null, Game.Condition? condition = null)
+        public List<Game> SearchGame(string name = "", string genre = "", int? MinPlayers = null, int? MaxPlayers = null, double? MinPrice = null, double? MaxPrice = null, Game.Condition? condition = null) 
         {
             return games.Where(game =>
                 (game != null) &&
@@ -256,7 +256,7 @@ namespace Genspil
             ).ToList();
         }
 
-        public void SearchAndDisplay()
+        public void SearchAndDisplay() // metode til at søge i listen
         {
             Console.WriteLine("Søg i liste: ");
             Console.Write("Navn (valgfrit): ");
@@ -307,7 +307,7 @@ namespace Genspil
             return input.PadRight(width);
         }
 
-        public void ListGames()
+        public void ListGames() // metode til at vise spil på lager med sortering
         {
             if (games.Count == 0)
             {
@@ -329,62 +329,62 @@ namespace Genspil
                 switch (valg)
                 {
                     case "1":
-                        games.Sort(
+                        games.Sort( // sorterings algoritme efter navn
                             (game1, game2) =>
                             {
                                 int sort1 = game1.Name.CompareTo(game2.Name);
                                 if (sort1 != 0) return sort1;
-                                return game1.Stock.CompareTo(game2.Stock);
+                                return game1.Stock.CompareTo(game2.Stock); // hvis de er ens, så sorteres efter navn
                             }
                             );
                         break;
                     case "2":
-                        games.Sort(
+                        games.Sort( // sorterings algoritme efter pris
                             (game1, game2) =>
                             {
                                 int sort1 = game1.Price.CompareTo(game2.Price);
                                 if (sort1 != 0) return sort1;
-                                return game1.Stock.CompareTo(game2.Stock);
+                                return game1.Stock.CompareTo(game2.Stock); // hvis de er ens, så sorteres efter navn
                             }
                             );
                         break;
                     case "3":
-                        games.Sort(
+                        games.Sort( // sorterings algoritme efter tilstand
                             (game1, game2) =>
                             {
                                 int sort1 = game1.GameCondition.CompareTo(game2.GameCondition);
                                 if (sort1 != 0) return sort1;
-                                return game1.Stock.CompareTo(game2.Stock);
+                                return game1.Stock.CompareTo(game2.Stock); // hvis de er ens, så sorteres efter navn
                             }
                             );
                         break;
                     case "4":
-                        games.Sort(
+                        games.Sort( // sorterings algoritme efter antal spillere
                             (game1, game2) =>
                             {
                                 int sort1 = game1.GroupSize.CompareTo(game2.GroupSize);
                                 if (sort1 != 0) return sort1;
-                                return game1.Stock.CompareTo(game2.Stock);
+                                return game1.Stock.CompareTo(game2.Stock); // hvis de er ens, så sorteres efter navn
                             }
                             );
                         break;
                     case "5":
-                        games.Sort(
+                        games.Sort( // sorterings algoritme efter genre
                         (game1, game2) =>
                         {
                             int sort1 = game1.Genre.CompareTo(game2.Genre);
                             if (sort1 != 0) return sort1;
-                            return game1.Stock.CompareTo(game2.Stock);
+                            return game1.Stock.CompareTo(game2.Stock); // hvis de er ens, så sorteres efter navn
                         }
                         );
                         break;
                     case "6":
-                        games.Sort(
+                        games.Sort( // sorterings algoritme efter antal på lager
                         (game1, game2) =>
                         {
                             int sort1 = game1.Stock.CompareTo(game2.Stock);
-                            if (sort1 != 0) return sort1;
-                            return game1.Name.CompareTo(game2.Name);
+                            if (sort1 != 0) return sort1; 
+                            return game1.Name.CompareTo(game2.Name); // hvis de er ens, så sorteres efter navn
                         }
                         );
                         break;

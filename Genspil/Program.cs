@@ -28,7 +28,7 @@ namespace Genspil
 
         }
 
-        public static void ShowMenu()
+        public static void ShowMenu() // første menu hvor du kan vælge mellem lagerliste og forespørgsler
         {
             bool exit = false;
 
@@ -61,7 +61,7 @@ namespace Genspil
             }
         }
 
-        public static void ShowInventoryMenu()
+        public static void ShowInventoryMenu() // Lagerliste menu
         {
             bool slut = false;
 
@@ -81,15 +81,15 @@ namespace Genspil
 
                 switch (input)
                 {
-                    case "1":
+                    case "1": // kalder spil tilføjelses metode
                         inventory.AddGameFromUserInput();
                         break;
-                    case "2":
+                    case "2": // kalder spil fjerne metode
                         Console.Write("Indtast navnet på spillet, der skal fjernes: ");
                         string nameToRemove = Console.ReadLine();
                         inventory.RemoveGame(nameToRemove);
                         break;
-                    case "3":
+                    case "3": // kalder spil redigerings metode
                         Console.WriteLine("Rediger spil");
                         Console.Write("Indtast navnet på spillet du vil redigere: ");
                         string gameName = Console.ReadLine();
@@ -201,10 +201,10 @@ namespace Genspil
                         // tænker menuen går gennem de forskellige søgekriterier, og hvis man ikke taster noget så er det ikke relevant til søgningen. Nem måde at kombinere søgninger på
                         inventory.SearchAndDisplay();
                         break;
-                    case "6":
+                    case "6": // afslutter lykken 
                         slut = true;
                         break;
-                    default:
+                    default: // respons til forkert input
                         Console.WriteLine("fix");
                         break;
                 }
@@ -213,7 +213,7 @@ namespace Genspil
 
 
 
-        public static void ShowRequestMenu()
+        public static void ShowRequestMenu() // request menu
         {
             bool slut = false;
 
@@ -232,6 +232,7 @@ namespace Genspil
                 switch (input)
                 {
                     case "1":
+                        // tilføj forespørgsel
                         requests.AddRequest(inventory);  
                         break;
                     case "2":
@@ -242,10 +243,12 @@ namespace Genspil
                         // vis forespørgseler
                         requests.ListRequests();
                         break;
-                    case "4":
+                    case "4": 
+                        // tilbage funktion
                         slut = true;
                         break;
                     default:
+                        // respons til forkert input
                         Console.WriteLine("fix");
                         break;
                 }
