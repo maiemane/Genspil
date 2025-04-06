@@ -47,6 +47,7 @@ namespace Genspil
                 requests.Add(newRequest);
 
                 // Gemmer spillet til JSON filen
+                 Console.WriteLine("Spillet er nu tilføjet til requests");
                 SaveRequestsToJson();
 
             }
