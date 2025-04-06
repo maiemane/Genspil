@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,6 +87,20 @@ namespace Genspil
             } 
             Console.ReadLine();
         }
+        public void RemoveRequestAuto(string name, string username)
+        {
+            Request requestToRemove = requests.FirstOrDefault(r =>
+                r.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&
+                r.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+
+            if (requestToRemove != null)
+            {
+                requests.Remove(requestToRemove);
+                SaveRequestsToJson();
+                Console.WriteLine($"Request for '{name}' fra {username} er fjernet automatisk.");
+            }
+        }
+
 
         // viser alle requests
         public void ListRequests()
@@ -135,4 +149,3 @@ namespace Genspil
         }
     }
 }
-

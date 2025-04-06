@@ -9,12 +9,12 @@ namespace Genspil
     {
         private List<Game> games = new List<Game>(); // Liste over spil i hukommelsen (Maise og Anders)
         private static string FilePath = "games.json"; // Placering af vores JSON-fil
+        private RequestInventory requestInventory = new RequestInventory();
 
         public GameInventory() // Constructor
         {
             // Indlæs spil fra JSON-filen 
             games = LoadGamesFromJson();
-            requestedGames LoadGamesFromJson();
         }
         public List<Game> GetGames()
         {
@@ -41,9 +41,14 @@ namespace Genspil
                 Console.WriteLine($"Nyt spil tilføjet: {game.Name} ({game.GameCondition}) med {game.Stock} stk.");
             }
 
-            bool isRequestedGameRemoved = requestedGames.FirstOrDefault(g => g.Name);
-            if(isRequestedGameRemoved){
-                Console.WriteLine($"Dette spil fandtes i requested games, og vil derfor blive fjernet derfra da det nu er kommet på lager");   
+            var matchingRequests = requestInventory.LoadRequestsFromJson()
+                .Where(r => r.Name.Equals(game.Name, StringComparison.OrdinalIgnoreCase) && r.MaxPrice >= game.Price)
+                .ToList();
+
+            foreach (var request in matchingRequests)
+            {
+                requestInventory.RemoveRequestAuto(request.Name, request.Username);
+                Console.WriteLine($"Request fjernet: {request.Name} fra {request.Username} (pris ≤ {request.MaxPrice} kr)");
             }
             // Gem den opdaterede liste til JSON-filen
             SaveGamesToJson();
@@ -127,8 +132,8 @@ namespace Genspil
             string version = Console.ReadLine();
 
             // Opret nyt spil og tilføj det til lageret
-            //Game newGame = new Game(name, condition, price, stock, genre, groupSize, version);
-            //AddGame(newGame);
+            Game newGame = new Game(name, condition, price, stock, genre, groupSize, version);
+            AddGame(newGame);
 
             Console.WriteLine("Spillet er blevet tilføjet!");
         }
@@ -427,4 +432,3 @@ namespace Genspil
         }
     }
 }
-
