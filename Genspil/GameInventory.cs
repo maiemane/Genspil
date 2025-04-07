@@ -56,6 +56,7 @@ namespace Genspil
 
         // Fjern et spil fra listen
         // skal laves lidt om, så man kan fjerne 1 stk med en stand fx istedet for at fjerne alle med samme navn
+        // funktion bliver ikke brugt længere, da den er rykket til "EditGame" istedet for
         public void RemoveGame(String nameToRemove)
         {
             Game gameToRemove = games.FirstOrDefault(g => g.Name == nameToRemove);
