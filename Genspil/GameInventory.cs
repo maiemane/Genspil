@@ -131,8 +131,9 @@ namespace Genspil
             Console.Write("Version fx Original, Hyggespil: ");
             string version = Console.ReadLine();
 
-            // Opret nyt spil og tilføj det til lageret
+            // Opret liste med spil data
             Game newGame = new Game(name, condition, price, stock, genre, groupSize, version);
+            // kald AddGame, med vores liste så den kan tilføjes til lageret, eller få opdateret stock
             AddGame(newGame);
 
             Console.WriteLine("Spillet er blevet tilføjet!");
