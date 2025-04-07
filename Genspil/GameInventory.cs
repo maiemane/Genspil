@@ -7,7 +7,7 @@ namespace Genspil
 {
     public class GameInventory
     {
-        private List<Game> games = new List<Game>(); // Liste over spil i hukommelsen (Maise og Anders)
+        private List<Game> games = new List<Game>(); // Liste over spil i hukommelsen, som så bliver tilføjet til vores json fil
         private static string FilePath = "games.json"; // Placering af vores JSON-fil
         private RequestInventory requestInventory = new RequestInventory();
 
